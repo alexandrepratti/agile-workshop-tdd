@@ -11,14 +11,16 @@ public class GeradorDeNotaFiscalTests {
 	private static final double PRECISAO = 0.00001;
 	private EnviadorDeEmail email;
 	private NotaFiscalDao dao;
+	private Sap sap;
 	private GeradorDeNotaFiscal gerador;
 
 	@Before
 	public void setUp() {
 		email = mock(EnviadorDeEmail.class);
 		dao = mock(NotaFiscalDao.class);
-
-		gerador = new GeradorDeNotaFiscal(email, dao);
+		sap = mock(Sap.class);
+		
+		gerador = new GeradorDeNotaFiscal(email, dao, sap);
 	}
 	
 	@Test
@@ -46,5 +48,13 @@ public class GeradorDeNotaFiscalTests {
 		NotaFiscal nf = gerador.gera(fatura);
 		
 		verify(dao).persiste(nf);
+	}
+	
+	@Test
+	public void deveIntegrarComSap() {
+		Fatura fatura = new Fatura(1000, "cliente 1");
+		
+		NotaFiscal nf = gerador.gera(fatura);
+		verify(sap).envia(nf);
 	}
 }

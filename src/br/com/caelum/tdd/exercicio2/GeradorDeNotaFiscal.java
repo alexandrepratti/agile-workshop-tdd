@@ -4,10 +4,12 @@ public class GeradorDeNotaFiscal {
 
 	private final EnviadorDeEmail email;
 	private final NotaFiscalDao dao;
+	private final Sap sap;
 
-	public GeradorDeNotaFiscal(EnviadorDeEmail email, NotaFiscalDao dao) {
+	public GeradorDeNotaFiscal(EnviadorDeEmail email, NotaFiscalDao dao, Sap sap) {
 		this.email = email;
 		this.dao = dao;
+		this.sap = sap;
 	}
 	
 	public NotaFiscal gera(Fatura fatura) {
@@ -18,6 +20,7 @@ public class GeradorDeNotaFiscal {
 		
 		email.enviaEmail(nf);
 		dao.persiste(nf);
+		sap.envia(nf);
 
 		return nf;
 	}
