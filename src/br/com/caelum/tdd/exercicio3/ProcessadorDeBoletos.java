@@ -9,5 +9,16 @@ public class ProcessadorDeBoletos {
 			Pagamento pagamento = new Pagamento(boleto.getValor(), MeioDePagamento.BOLETO);
 			fatura.getPagamentos().add(pagamento);
 		}
+		
+		
+		double totalPagamentos = 0.0;
+		for (Pagamento pagamento : fatura.getPagamentos()) {
+			totalPagamentos += pagamento.getValor();
+		}
+		
+		if(totalPagamentos >= fatura.getValor()) {
+			fatura.setPago(true);
+		}
+		
 	}
 }
